@@ -6,4 +6,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/:system', function(req, res, next) {
+  res.render('sheets/' + req.params.system);
+});
+
 module.exports = router;
