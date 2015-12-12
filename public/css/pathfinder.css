@@ -1,0 +1,66 @@
+.tabs {
+	border-radius: 7px 7px 0 0;
+}
+
+input.tabs {
+	width: 70px;
+	height: 20px;
+	opacity: 0;
+	cursor: pointer;
+	position: relative;
+	z-index: 10;
+	margin: 0;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
+input.tabs:first-child {
+	margin-left: 15px;
+}
+
+span.tabs {
+	text-align: center;
+	display: inline-block;
+	background: #008;
+	color: #FFF;
+	font-weight: bold;
+	width: 70px;
+	height: 20px;
+	margin-left: -74px;
+	margin-top: -25px;
+	cursor: pointer;
+}
+
+input.tabs:checked + span {
+	background: #000;
+}
+
+.section {
+	display: none;
+	margin: 0 10px;
+	padding: 5px;
+}
+
+#tab-outline:checked ~ #section-outline,
+#tab-main:checked ~ #section-main,
+#tab-class:checked ~ #section-class,
+#tab-defense:checked ~ #section-defense,
+#tab-attack:checked ~ #section-attack,
+#tab-skills:checked ~ #section-skills,
+#tab-feats:checked ~ #section-feats,
+#tab-gear:checked ~ #section-gear,
+#tab-spells:checked ~ #section-spells,
+#tab-history:checked ~ #section-history {
+	display: block;
+}
+
+.title {
+	height: 20px;
+	background: #000;
+	color: #FFF;
+}
+
+#top-title {
+	margin: 0 10px;
+	margin-top: -5px;
+}
