@@ -1,2 +1,22 @@
 language: node_js
-node_js: "node"
+node_js: node
+install: echo "skip install"
+branches:
+  only: master
+after_success:
+- chmod 600 sheet-key
+- mv sheet-key ~/.ssh/id_rsa
+- mkdir build
+- mv !(build|deploy.sh|sheet-key.enc|README.md) build
+- tar -czf sheets.tgz build
+- scp sheets.tgz deploy.sh $user@$host:$path
+- ssh $user@$host $path/deploy.sh
+before_install:
+- echo -e "Host $host\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+- openssl aes-256-cbc -K $encrypted_0e843c83bfa6_key -iv $encrypted_0e843c83bfa6_iv
+  -in sheet-key.enc -out sheet-key -d
+env:
+  global:
+  - secure: locVPCQnGp8ADpzAdUGL/RUByP6VorIRNoTaFegV96cobwWtqkmu+IMhDzsyRZcXT7eVCIEbE0Wn9b0QPe68WxS8uuFxpmDQJQ1s5SPf/GFn/4lDhwYy4INHly9XuikD/oOEx+8zbJACDaCNX9EFczSsG/uARSwLHHfd30Yv/jikiLRZJqwBtgg004gRvo/hnGSNAnbX7a69yz/vZDikbBEUXRJdPxjGgRBmBFrrlG7k0XYspmx+/PgpYr1ImyuoqZ3pnwuor+3F3a3VVsIkn+OX9vGwq4NQwHDUORh0QcUEKOuej5CWTXw+K8kEpqu4w9urx4JUIPgOhgNt/35nBlHhLmc1DF0AfOfpGa4Gs5Q3yc5TV6urKUeDKss7DSGoMumq7uuXYYHpVVeCOSHqcGtVu+uPykI6G34/AXQF4aDTnXroD1jLh2pYftv3asIeePEWkwpCh8uIX6I8G1Ian5/su1IhVycMS/Qznoo1G35CaYZBS8F0EGmyxqzEjocMgsSPKPb2ZTF+4Nj2Z5rC+clNz5aq8nPqN+YprW4b8UyTHlP2uWuXSDqDSA/Zre1yi0riGJ5HQn7dTsLbPl4p+fTfl5eOZWL6CfMQjgw1PocfRpOkXb5yi+l054zzU8u6PD2T8LRl6BSSD7Nsy9K0upVRKDnA0uKoOAfT2CEXYm4=
+  - secure: XMMxKZ759Nt7pTLQlL1/QFE8rVguAqOPIt3u81vkQ6f3lMkr3lKpb+JtjYJFG00mqz9Obf847aSjeafjCH8WR+4J8XQvj3RI5SfexVoJ1dY6ZifdYcEYWjP4VRFALYNfBzVoHp+BUWsGWcNBFD+wTwW5BEhQtk0V/Z4QyEnzW+EeKDbnY54OatoevdU4Llzej790GbECv9aZkFaVv0Q0+PbREXT33O2RNLp4XitOi8Y100v9jtyK+vFKKx4sMdNfiR5rdMSdw5BfnozAyEvxWbzfEAgGRb8RQscHjOvQQ8KLUYUrivAYLGRGFtPV0OcfT4jB0C5krEOYrlQXXQID6tsgrDR9LNmt6dfboHYePgOW8cAZVBDlPJt03WNVvcntr7JgS+czZL7DtheHb7XtEO6z+KepZdzoSRFWdM6007tGZFBAd0Mjqty3/y6fHgKhWSTc3HmUMrSoG7DLOKFXGN8E/Ypsgo8ZcvnwbLUan9ItKaeh5zrTBK+FaZm9eURAGOBogHiZdeos+6TID/IvbrsTFMm54OHPOnIJaD5iTYK2TPAVI1LZ9bDVgTD9ozdubGMZSIKrDMCiJSEAvCNF0iCUmpwYXHWvha8qrdFePYdaBsrlv0kflU4Af+FFpSS+hyD9DiNTHT0ksZ+oN61DcteQa0yvtAbEOF+fRFqSVws=
+  - secure: 1otbKqWknfWN1AiPpzrhNYaAZDS0EWeDbc7cJdcfYy0UWTfEcRhnyZy8KeMlINLhgPk4wcMOk5ADvDnWo5z3DcJugvGP0z7scJiCT1DL+BkapQZ16VY0tD5wKxhI6AgQynblRLa1jlA5AjCjwjBzUNkVpoGhLcyQI/+R3R564pQE0IogFPWhBC7tz9+r72LScqsoT0UKTa1Qcz0Kjk/aVkZra+o8GrbYlrVhhdAnxFpjfBMEc6qZFZ/Mr8dehcyyW5pvNsvnviFzw53Tx6+7oq3WbDTjx7mbs/1c5uGZFdHTvykECJcuyGsAWUhegVtS5DVbD+CfAMViv2YQkmEcb3/bdndcQ/1M7jMS6VtoL5Wo2rRmuoohzESJJSvhvK3yQ0MaUxc8il0Jrc5w+Yjre+TDeAZKc/k8I1aqZwPn+RAzUng3teka1effLt71drAuFMEgDEsqyDRZtVChBHoX6AdQo5iWQK4byBWh6/6nq5xCRrjjea6pgUimJUjZ5hxq8BORZyzf8gzf4d0jbUGZFK6+60RSLlMtqK0B5SKZVYV4eNtWIJGSxb89c2Ti+ZC2yv6+YuOkFShBGtlIJFHAziv0qIJ72MtB7FG4nfgJz+AUKjRM9Wtim2lI/hhIQMu0PDyzFzvpiUi/DEBa2XHD/4hJh37TgSg7UllYV+D/4jc=
