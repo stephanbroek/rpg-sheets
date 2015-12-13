@@ -1,6 +1,6 @@
 language: node_js
 node_js: node
-install: echo "skip install"
+install: npm install --production
 branches:
   only: master
 after_success:
