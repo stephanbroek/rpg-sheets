@@ -1,9 +1,10 @@
 var assert = require('assert');
 
-exports['Run'] = function () 
+exports['test run'] = function () 
 {
   // Fails if bin/www fails, needs to be changed if npm start is changed.
   var www = require("../bin/www");
+  assert.ok(www, "node fails to run.");
 };
 
 if(module == require.main) require('test').run(exports);
